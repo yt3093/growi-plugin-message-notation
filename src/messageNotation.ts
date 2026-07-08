@@ -24,40 +24,39 @@ function isInEditorDOM(el: Element): boolean {
 // ---- icon SVG builders ----
 
 function createInfoIcon(): SVGSVGElement {
+  // fa-check-circle (Qiita: info type uses check-circle)
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
-  svg.setAttribute('width', '16');
-  svg.setAttribute('height', '16');
+  svg.setAttribute('width', '18');
+  svg.setAttribute('height', '18');
   svg.setAttribute('fill', 'currentColor');
   svg.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('fill-rule', 'evenodd');
-  path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 102 0V7zm-1-3a1 1 0 100 2 1 1 0 000-2z');
+  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z');
   svg.appendChild(path);
   return svg;
 }
 
 function createWarnIcon(): SVGSVGElement {
+  // fa-exclamation-circle (Qiita: warn type uses exclamation-circle)
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
-  svg.setAttribute('width', '16');
-  svg.setAttribute('height', '16');
+  svg.setAttribute('width', '18');
+  svg.setAttribute('height', '18');
   svg.setAttribute('fill', 'currentColor');
   svg.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('fill-rule', 'evenodd');
-  path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z');
+  path.setAttribute('d', 'M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z');
   svg.appendChild(path);
   return svg;
 }
 
 function createAlertIcon(): SVGSVGElement {
+  // fa-times-circle (Qiita: alert type uses times-circle)
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
-  svg.setAttribute('width', '16');
-  svg.setAttribute('height', '16');
+  svg.setAttribute('width', '18');
+  svg.setAttribute('height', '18');
   svg.setAttribute('fill', 'currentColor');
   svg.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -75,7 +74,7 @@ const ICON_CREATORS: Record<NoteType, () => SVGSVGElement> = {
 };
 
 const LABELS: Record<NoteType, string> = {
-  info: 'Info',
+  info: 'Note',
   warn: 'Warning',
   alert: 'Alert',
 };
