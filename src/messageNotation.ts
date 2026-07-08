@@ -34,7 +34,8 @@ function createInfoIcon(): SVGSVGElement {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('fill-rule', 'evenodd');
   path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm1-9a1 1 0 10-2 0v6a1 1 0 102 0V9zm-1-3.2a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z');
+  // exact vertical mirror of "!" around y=10: bar y=8–15, dot center y=5 (gap 1.8)
+  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm1-10a1 1 0 10-2 0v7a1 1 0 102 0V8zm-1-4.2a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z');
   svg.appendChild(path);
   return svg;
 }
