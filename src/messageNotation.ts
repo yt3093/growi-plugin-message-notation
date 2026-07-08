@@ -24,7 +24,7 @@ function isInEditorDOM(el: Element): boolean {
 // ---- icon SVG builders ----
 
 function createInfoIcon(): SVGSVGElement {
-  // circle with "i": bar (y=9–15) + dot (y=7, r=1.2) — vertically centered
+  // circle with serif "i": top/bottom serifs (3px wide) + 2px bar + dot r=1.5 for legibility
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
   svg.setAttribute('width', '20');
@@ -34,8 +34,7 @@ function createInfoIcon(): SVGSVGElement {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('fill-rule', 'evenodd');
   path.setAttribute('clip-rule', 'evenodd');
-  // exact vertical mirror of "!" around y=10: bar y=8–15, dot center y=5 (gap 1.8)
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm1-10a1 1 0 10-2 0v7a1 1 0 102 0V8zm-1-4.2a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z');
+  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm-1.5-10h3v1h-.5v5h.5v1h-3v-1h.5v-5h-.5zm1.5-5a1.5 1.5 0 100 3a1.5 1.5 0 000-3z');
   svg.appendChild(path);
   return svg;
 }
