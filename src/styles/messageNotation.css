@@ -108,6 +108,8 @@ html[data-bs-theme="dark"] {
 
 .gpmt-note-header svg {
   flex-shrink: 0;
+  width:  20px;
+  height: 20px;
 }
 
 /* ===== Body ===== */
