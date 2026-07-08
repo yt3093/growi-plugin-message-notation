@@ -24,7 +24,7 @@ function isInEditorDOM(el: Element): boolean {
 // ---- icon SVG builders ----
 
 function createInfoIcon(): SVGSVGElement {
-  // fa-check-circle (Qiita: info type uses check-circle)
+  // circle with "i": filled circle + evenodd cutout for dot (top) and bar (below)
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
   svg.setAttribute('width', '18');
@@ -32,13 +32,16 @@ function createInfoIcon(): SVGSVGElement {
   svg.setAttribute('fill', 'currentColor');
   svg.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z');
+  path.setAttribute('fill-rule', 'evenodd');
+  path.setAttribute('clip-rule', 'evenodd');
+  // circle + i-bar (y=7–11) + i-dot (y=5)
+  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 102 0V7zm-1-3a1 1 0 100 2 1 1 0 000-2z');
   svg.appendChild(path);
   return svg;
 }
 
 function createWarnIcon(): SVGSVGElement {
-  // fa-exclamation-circle (Qiita: warn type uses exclamation-circle)
+  // circle with "!": filled circle + evenodd cutout for bar (top, tall) + dot (bottom)
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
   svg.setAttribute('width', '18');
@@ -46,7 +49,10 @@ function createWarnIcon(): SVGSVGElement {
   svg.setAttribute('fill', 'currentColor');
   svg.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('d', 'M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z');
+  path.setAttribute('fill-rule', 'evenodd');
+  path.setAttribute('clip-rule', 'evenodd');
+  // circle + !-bar (y=5–12) + !-dot (y=15)
+  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v7a1 1 0 102 0V5zm-1 9a1 1 0 100 2 1 1 0 000-2');
   svg.appendChild(path);
   return svg;
 }
