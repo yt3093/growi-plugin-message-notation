@@ -18,6 +18,18 @@
   --gpmt-alert-bg:        #fef2f2;
   --gpmt-alert-header-bg: rgba(220, 38, 38, 0.10);
 
+  /* note: blue (bookmark) */
+  --gpmt-note-color:      #1d4ed8;
+  --gpmt-note-border:     #3b82f6;
+  --gpmt-note-bg:         #eff6ff;
+  --gpmt-note-header-bg:  rgba(59, 130, 246, 0.10);
+
+  /* tips: violet (star) */
+  --gpmt-tips-color:      #6d28d9;
+  --gpmt-tips-border:     #8b5cf6;
+  --gpmt-tips-bg:         #f5f3ff;
+  --gpmt-tips-header-bg:  rgba(139, 92, 246, 0.10);
+
   --gpmt-border-width:    4px;
   --gpmt-radius:          0 6px 6px 0;
 }
@@ -39,6 +51,16 @@
     --gpmt-alert-border:    #ef4444;
     --gpmt-alert-bg:        rgba(220, 38, 38, 0.10);
     --gpmt-alert-header-bg: rgba(220, 38, 38, 0.16);
+
+    --gpmt-note-color:      #60a5fa;
+    --gpmt-note-border:     #3b82f6;
+    --gpmt-note-bg:         rgba(59, 130, 246, 0.10);
+    --gpmt-note-header-bg:  rgba(59, 130, 246, 0.16);
+
+    --gpmt-tips-color:      #a78bfa;
+    --gpmt-tips-border:     #8b5cf6;
+    --gpmt-tips-bg:         rgba(139, 92, 246, 0.10);
+    --gpmt-tips-header-bg:  rgba(139, 92, 246, 0.16);
   }
 }
 
@@ -57,6 +79,16 @@ html[data-bs-theme="dark"] {
   --gpmt-alert-border:    #ef4444;
   --gpmt-alert-bg:        rgba(220, 38, 38, 0.10);
   --gpmt-alert-header-bg: rgba(220, 38, 38, 0.16);
+
+  --gpmt-note-color:      #60a5fa;
+  --gpmt-note-border:     #3b82f6;
+  --gpmt-note-bg:         rgba(59, 130, 246, 0.10);
+  --gpmt-note-header-bg:  rgba(59, 130, 246, 0.16);
+
+  --gpmt-tips-color:      #a78bfa;
+  --gpmt-tips-border:     #8b5cf6;
+  --gpmt-tips-bg:         rgba(139, 92, 246, 0.10);
+  --gpmt-tips-header-bg:  rgba(139, 92, 246, 0.16);
 }
 
 /* ===== Base note block ===== */
@@ -81,6 +113,14 @@ html[data-bs-theme="dark"] {
   border-color: var(--gpmt-alert-border);
   background:   var(--gpmt-alert-bg);
 }
+.gpmt-note-note {
+  border-color: var(--gpmt-note-border);
+  background:   var(--gpmt-note-bg);
+}
+.gpmt-note-tips {
+  border-color: var(--gpmt-tips-border);
+  background:   var(--gpmt-tips-bg);
+}
 
 /* ===== Header ===== */
 .gpmt-note-header {
@@ -104,6 +144,14 @@ html[data-bs-theme="dark"] {
 .gpmt-note-alert .gpmt-note-header {
   background: var(--gpmt-alert-header-bg);
   color:      var(--gpmt-alert-color);
+}
+.gpmt-note-note  .gpmt-note-header {
+  background: var(--gpmt-note-header-bg);
+  color:      var(--gpmt-note-color);
+}
+.gpmt-note-tips  .gpmt-note-header {
+  background: var(--gpmt-tips-header-bg);
+  color:      var(--gpmt-tips-color);
 }
 
 .gpmt-note-header svg {

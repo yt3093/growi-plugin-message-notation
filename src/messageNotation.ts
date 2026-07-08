@@ -1,7 +1,7 @@
 import type { NoteType } from './types';
 
 const ENHANCED_ATTR = 'data-gpmt-enhanced';
-const NOTE_OPEN_RE = /^:::\s*note(?:\s+(info|warn|alert))?\s*$/i;
+const NOTE_OPEN_RE = /^:::\s*message(?:\s+(info|warn|alert|note|tips))?\s*$/i;
 
 // container → restore function
 const noteBlocks = new Map<HTMLDivElement, () => void>();
@@ -71,16 +71,52 @@ function createAlertIcon(): SVGSVGElement {
   return svg;
 }
 
+function createNoteIcon(): SVGSVGElement {
+  // circle with bookmark (rectangle + V-notch at bottom)
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 20 20');
+  svg.setAttribute('width', '20');
+  svg.setAttribute('height', '20');
+  svg.setAttribute('fill', 'currentColor');
+  svg.setAttribute('aria-hidden', 'true');
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('fill-rule', 'evenodd');
+  path.setAttribute('clip-rule', 'evenodd');
+  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm-2-13h4v8l-2 2-2-2z');
+  svg.appendChild(path);
+  return svg;
+}
+
+function createTipsIcon(): SVGSVGElement {
+  // circle with 5-pointed star (10-vertex polygon)
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 20 20');
+  svg.setAttribute('width', '20');
+  svg.setAttribute('height', '20');
+  svg.setAttribute('fill', 'currentColor');
+  svg.setAttribute('aria-hidden', 'true');
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('fill-rule', 'evenodd');
+  path.setAttribute('clip-rule', 'evenodd');
+  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zM10 5.5L11.06 8.54 14.28 8.61 11.71 10.56 12.65 13.64 10 11.8 7.35 13.64 8.29 10.56 5.72 8.61 8.94 8.54Z');
+  svg.appendChild(path);
+  return svg;
+}
+
 const ICON_CREATORS: Record<NoteType, () => SVGSVGElement> = {
   info: createInfoIcon,
   warn: createWarnIcon,
   alert: createAlertIcon,
+  note: createNoteIcon,
+  tips: createTipsIcon,
 };
 
 const LABELS: Record<NoteType, string> = {
-  info: 'Note',
+  info: 'Info',
   warn: 'Warning',
   alert: 'Alert',
+  note: 'Note',
+  tips: 'Tips',
 };
 
 // ---- DOM builder ----

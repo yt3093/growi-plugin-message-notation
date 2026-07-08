@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-export type NoteType = 'info' | 'warn' | 'alert';
+export type NoteType = 'info' | 'warn' | 'alert' | 'note' | 'tips';
 
 export interface NoteBlock {
   container: HTMLDivElement;
