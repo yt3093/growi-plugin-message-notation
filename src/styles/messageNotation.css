@@ -5,9 +5,9 @@
   --gpmt-info-border:     #18a44c;
   --gpmt-info-bg:         #f0faf4;
 
-  /* warn: amber (fa-exclamation-circle = Qiita) */
-  --gpmt-warn-color:      #b45309;
-  --gpmt-warn-border:     #d97706;
+  /* warn: yellow (fa-exclamation-circle = Qiita) */
+  --gpmt-warn-color:      #a16207;
+  --gpmt-warn-border:     #ca8a04;
   --gpmt-warn-bg:         #fffbeb;
 
   /* alert: red (fa-times-circle = Qiita) */
@@ -36,8 +36,8 @@
     --gpmt-info-border:     #22c55e;
     --gpmt-info-bg:         rgba(24, 164, 76, 0.10);
 
-    --gpmt-warn-color:      #fbbf24;
-    --gpmt-warn-border:     #f59e0b;
+    --gpmt-warn-color:      #facc15;
+    --gpmt-warn-border:     #eab308;
     --gpmt-warn-bg:         rgba(217, 119, 6, 0.10);
 
     --gpmt-alert-color:     #f87171;
