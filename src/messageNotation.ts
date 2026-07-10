@@ -39,7 +39,7 @@ function createInfoIcon(): SVGSVGElement {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('fill-rule', 'evenodd');
   path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm-1.5-10h3v1h-.5v5h.5v1h-3v-1h.5v-5h-.5zm1.5-5a1.5 1.5 0 100 3a1.5 1.5 0 000-3z');
+  path.setAttribute('d', 'M10 19a9 9 0 100-18 9 9 0 000 18zm-1.5-10h3v1h-.5v5h.5v1h-3v-1h.5v-5h-.5zm1.5-5a1.5 1.5 0 100 3a1.5 1.5 0 000-3z');
   svg.appendChild(path);
   return svg;
 }
@@ -55,7 +55,7 @@ function createWarnIcon(): SVGSVGElement {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('fill-rule', 'evenodd');
   path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v7a1 1 0 102 0V5zm-1 9a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4');
+  path.setAttribute('d', 'M10 19a9 9 0 100-18 9 9 0 000 18zm1-13a1 1 0 10-2 0v7a1 1 0 102 0V5zm-1 9a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4');
   svg.appendChild(path);
   return svg;
 }
@@ -71,7 +71,7 @@ function createAlertIcon(): SVGSVGElement {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('fill-rule', 'evenodd');
   path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z');
+  path.setAttribute('d', 'M10 19a9 9 0 100-18 9 9 0 000 18zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z');
   svg.appendChild(path);
   return svg;
 }
@@ -115,7 +115,7 @@ function createMaskedDiscIcon(maskIdPrefix: string, maskContent: SVGElement[]): 
   svg.appendChild(defs);
 
   const disc = document.createElementNS(SVG_NS, 'path');
-  disc.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16z');
+  disc.setAttribute('d', 'M10 19a9 9 0 100-18 9 9 0 000 18z');
   disc.setAttribute('fill', 'currentColor');
   disc.setAttribute('mask', `url(#${maskId})`);
   svg.appendChild(disc);
