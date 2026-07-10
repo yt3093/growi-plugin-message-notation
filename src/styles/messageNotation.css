@@ -6,8 +6,8 @@
   --gpmt-info-bg:         #f0faf4;
 
   /* warn: yellow (fa-exclamation-circle = Qiita) */
-  --gpmt-warn-color:      #a16207;
-  --gpmt-warn-border:     #ca8a04;
+  --gpmt-warn-color:      #ca8a04;
+  --gpmt-warn-border:     #eab308;
   --gpmt-warn-bg:         #fffbeb;
 
   /* alert: red (fa-times-circle = Qiita) */
