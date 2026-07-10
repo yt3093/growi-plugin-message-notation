@@ -72,7 +72,7 @@ function createAlertIcon(): SVGSVGElement {
 }
 
 function createNoteIcon(): SVGSVGElement {
-  // circle with bookmark (rectangle + V-notch at bottom)
+  // circle with binder clip: two rectangular arms + rectangular body as evenodd cutout
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
   svg.setAttribute('width', '20');
@@ -82,7 +82,7 @@ function createNoteIcon(): SVGSVGElement {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('fill-rule', 'evenodd');
   path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zm-2-13h4v8l-2 2-2-2z');
+  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zM7 5.5h2v4.5H7ZM11 5.5h2v4.5H11ZM7 10h6v6H7Z');
   svg.appendChild(path);
   return svg;
 }
