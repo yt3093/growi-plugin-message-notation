@@ -158,30 +158,28 @@ function createNoteIcon(): SVGSVGElement {
 }
 
 function createTipsIcon(): SVGSVGElement {
-  // enlarged lightbulb (no rays) with a checkmark inside the glass, two
-  // screw-base bars, and a rounded bottom cap — punched out of the disc via
-  // the mask.
-  const bulb = document.createElementNS(SVG_NS, 'path');
-  bulb.setAttribute(
-    'd',
-    'M7.3 10.4 C6.55 9.2 6.1 8.45 6.325 7.55 C6.55 6.05 7.9 5.0 10 5.0 C12.1 5.0 13.45 6.05 13.675 7.55 C13.9 8.45 13.45 9.2 12.7 10.4',
-  );
+  // lightbulb with a round glass (reads more clearly as a bulb at icon size
+  // than a tapered dome), a checkmark inside, two screw-base bars, and a
+  // rounded bottom cap — punched out of the disc via the mask.
+  const bulb = document.createElementNS(SVG_NS, 'circle');
+  bulb.setAttribute('cx', '10');
+  bulb.setAttribute('cy', '8.6');
+  bulb.setAttribute('r', '3.1');
   bulb.setAttribute('fill', 'none');
   bulb.setAttribute('stroke', 'black');
-  bulb.setAttribute('stroke-width', '1.3');
-  bulb.setAttribute('stroke-linecap', 'round');
+  bulb.setAttribute('stroke-width', '1.2');
 
   const check = document.createElementNS(SVG_NS, 'path');
-  check.setAttribute('d', 'M7.8 7.5 L9.3 9.1 L12.3 5.6');
+  check.setAttribute('d', 'M8.4 8.2 L9.5 9.35 L11.5 7.0');
   check.setAttribute('fill', 'none');
   check.setAttribute('stroke', 'black');
-  check.setAttribute('stroke-width', '1.3');
+  check.setAttribute('stroke-width', '1.1');
   check.setAttribute('stroke-linecap', 'round');
   check.setAttribute('stroke-linejoin', 'round');
 
   const bars = [
-    [7.75, 10.9, 12.25, 10.9],
-    [7.75, 12.5, 12.25, 12.5],
+    [8.2, 12.0, 11.8, 12.0],
+    [8.2, 13.2, 11.8, 13.2],
   ].map(([x1, y1, x2, y2]) => {
     const bar = document.createElementNS(SVG_NS, 'line');
     bar.setAttribute('x1', String(x1));
@@ -195,11 +193,11 @@ function createTipsIcon(): SVGSVGElement {
   });
 
   const cap = document.createElementNS(SVG_NS, 'rect');
-  cap.setAttribute('x', '8.5');
-  cap.setAttribute('y', '13.0');
-  cap.setAttribute('width', '3');
-  cap.setAttribute('height', '1.95');
-  cap.setAttribute('rx', '0.9');
+  cap.setAttribute('x', '8.8');
+  cap.setAttribute('y', '13.7');
+  cap.setAttribute('width', '2.4');
+  cap.setAttribute('height', '1.6');
+  cap.setAttribute('rx', '0.7');
   cap.setAttribute('fill', 'none');
   cap.setAttribute('stroke', 'black');
   cap.setAttribute('stroke-width', '0.9');
