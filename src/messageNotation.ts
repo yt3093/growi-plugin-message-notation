@@ -2,9 +2,14 @@ import type { NoteType } from './types';
 
 const ENHANCED_ATTR = 'data-gpmt-enhanced';
 const NOTE_OPEN_RE = /^:::\s*message(?:\s+(info|warn|alert|note|tips))?\s*$/i;
+const SVG_NS = 'http://www.w3.org/2000/svg';
 
 // container → restore function
 const noteBlocks = new Map<HTMLDivElement, () => void>();
+
+// monotonically increasing id so multiple note/tips icons on one page don't
+// collide on their <mask> element ids
+let iconMaskSeq = 0;
 
 // ---- context guards ----
 
@@ -27,8 +32,8 @@ function createInfoIcon(): SVGSVGElement {
   // circle with serif "i": top/bottom serifs (3px wide) + 2px bar + dot r=1.5 for legibility
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
-  svg.setAttribute('width', '20');
-  svg.setAttribute('height', '20');
+  svg.setAttribute('width', '24');
+  svg.setAttribute('height', '24');
   svg.setAttribute('fill', 'currentColor');
   svg.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -43,8 +48,8 @@ function createWarnIcon(): SVGSVGElement {
   // circle with "!": bar (y=5–12) + dot (y=15, r=1.2)
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
-  svg.setAttribute('width', '20');
-  svg.setAttribute('height', '20');
+  svg.setAttribute('width', '24');
+  svg.setAttribute('height', '24');
   svg.setAttribute('fill', 'currentColor');
   svg.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -59,8 +64,8 @@ function createAlertIcon(): SVGSVGElement {
   // circle with "×"
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
-  svg.setAttribute('width', '20');
-  svg.setAttribute('height', '20');
+  svg.setAttribute('width', '24');
+  svg.setAttribute('height', '24');
   svg.setAttribute('fill', 'currentColor');
   svg.setAttribute('aria-hidden', 'true');
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -71,36 +76,107 @@ function createAlertIcon(): SVGSVGElement {
   return svg;
 }
 
-function createNoteIcon(): SVGSVGElement {
-  // circle with binder clip: two rectangular arms + rectangular body as evenodd cutout
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+function createMaskedDiscIcon(maskIdPrefix: string, maskContent: SVGElement[]): SVGSVGElement {
+  // solid disc with a symbol genuinely cut out via <mask> (true transparency,
+  // not a color approximation), so whatever sits behind the icon (the header
+  // background) shows through correctly in both light and dark mode — same
+  // visual language as the evenodd-punched info/warn/alert icons, just built
+  // from stroke-friendly primitives instead of a single evenodd path.
+  const svg = document.createElementNS(SVG_NS, 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
-  svg.setAttribute('width', '20');
-  svg.setAttribute('height', '20');
-  svg.setAttribute('fill', 'currentColor');
+  svg.setAttribute('width', '24');
+  svg.setAttribute('height', '24');
   svg.setAttribute('aria-hidden', 'true');
-  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('fill-rule', 'evenodd');
-  path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zM7 5.5h2v4.5H7ZM11 5.5h2v4.5H11ZM7 10h6v6H7Z');
-  svg.appendChild(path);
+
+  const maskId = `gpmt-${maskIdPrefix}-mask-${iconMaskSeq++}`;
+
+  const defs = document.createElementNS(SVG_NS, 'defs');
+  const mask = document.createElementNS(SVG_NS, 'mask');
+  mask.setAttribute('id', maskId);
+  mask.setAttribute('maskUnits', 'userSpaceOnUse');
+  mask.setAttribute('x', '0');
+  mask.setAttribute('y', '0');
+  mask.setAttribute('width', '20');
+  mask.setAttribute('height', '20');
+
+  const reveal = document.createElementNS(SVG_NS, 'rect');
+  reveal.setAttribute('x', '0');
+  reveal.setAttribute('y', '0');
+  reveal.setAttribute('width', '20');
+  reveal.setAttribute('height', '20');
+  reveal.setAttribute('fill', 'white');
+  mask.appendChild(reveal);
+
+  for (const el of maskContent) {
+    mask.appendChild(el);
+  }
+
+  defs.appendChild(mask);
+  svg.appendChild(defs);
+
+  const disc = document.createElementNS(SVG_NS, 'path');
+  disc.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16z');
+  disc.setAttribute('fill', 'currentColor');
+  disc.setAttribute('mask', `url(#${maskId})`);
+  svg.appendChild(disc);
+
   return svg;
 }
 
+function createNoteIcon(): SVGSVGElement {
+  // diagonal paperclip, punched out of the disc as a black-on-white mask stroke
+  const clip = document.createElementNS(SVG_NS, 'path');
+  clip.setAttribute(
+    'd',
+    'M14.42 9.825 l-4.595 4.595 a3 3 0 0 1 -4.245 -4.245 l4.595 -4.595 a2 2 0 0 1 2.83 2.83 l-4.6 4.595 a1 1 0 0 1 -1.415 -1.415 l4.245 -4.24',
+  );
+  clip.setAttribute('fill', 'none');
+  clip.setAttribute('stroke', 'black');
+  clip.setAttribute('stroke-width', '1.4');
+  clip.setAttribute('stroke-linecap', 'round');
+  clip.setAttribute('stroke-linejoin', 'round');
+
+  return createMaskedDiscIcon('note', [clip]);
+}
+
 function createTipsIcon(): SVGSVGElement {
-  // circle with lightbulb: round glass bulb + rectangular base as evenodd cutout
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttribute('viewBox', '0 0 20 20');
-  svg.setAttribute('width', '20');
-  svg.setAttribute('height', '20');
-  svg.setAttribute('fill', 'currentColor');
-  svg.setAttribute('aria-hidden', 'true');
-  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  path.setAttribute('fill-rule', 'evenodd');
-  path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zM10 5C7 5 5 7.2 5 10C5 11.8 6.2 13.2 7.5 14L7.5 16L12.5 16L12.5 14C13.8 13.2 15 11.8 15 10C15 7.2 13 5 10 5ZM7.5 14h5v.7h-5z');
-  svg.appendChild(path);
-  return svg;
+  // lightbulb (glass + base) with 3 radiating rays, punched out of the disc
+  const bulb = document.createElementNS(SVG_NS, 'circle');
+  bulb.setAttribute('cx', '10');
+  bulb.setAttribute('cy', '11');
+  bulb.setAttribute('r', '2.8');
+  bulb.setAttribute('fill', 'none');
+  bulb.setAttribute('stroke', 'black');
+  bulb.setAttribute('stroke-width', '1.3');
+
+  const base = document.createElementNS(SVG_NS, 'rect');
+  base.setAttribute('x', '8.8');
+  base.setAttribute('y', '13.4');
+  base.setAttribute('width', '2.4');
+  base.setAttribute('height', '1.6');
+  base.setAttribute('rx', '0.5');
+  base.setAttribute('fill', 'none');
+  base.setAttribute('stroke', 'black');
+  base.setAttribute('stroke-width', '1.2');
+
+  const rays: Array<[number, number, number, number]> = [
+    [10, 6.6, 10, 4.8],
+    [7.55, 7.75, 6.1, 6.3],
+    [12.45, 7.75, 13.9, 6.3],
+  ];
+  const rayEls = rays.map(([x1, y1, x2, y2]) => {
+    const ray = document.createElementNS(SVG_NS, 'line');
+    ray.setAttribute('x1', String(x1));
+    ray.setAttribute('y1', String(y1));
+    ray.setAttribute('x2', String(x2));
+    ray.setAttribute('y2', String(y2));
+    ray.setAttribute('stroke', 'black');
+    ray.setAttribute('stroke-width', '1.5');
+    ray.setAttribute('stroke-linecap', 'round');
+    return ray;
+  });
+
+  return createMaskedDiscIcon('tips', [bulb, base, ...rayEls]);
 }
 
 const ICON_CREATORS: Record<NoteType, () => SVGSVGElement> = {
