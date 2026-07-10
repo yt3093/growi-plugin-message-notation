@@ -88,7 +88,7 @@ function createNoteIcon(): SVGSVGElement {
 }
 
 function createTipsIcon(): SVGSVGElement {
-  // circle with 5-pointed star (10-vertex polygon)
+  // circle with lightbulb: round glass bulb + rectangular base as evenodd cutout
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 20 20');
   svg.setAttribute('width', '20');
@@ -98,7 +98,7 @@ function createTipsIcon(): SVGSVGElement {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('fill-rule', 'evenodd');
   path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zM10 5.5L11.06 8.54 14.28 8.61 11.71 10.56 12.65 13.64 10 11.8 7.35 13.64 8.29 10.56 5.72 8.61 8.94 8.54Z');
+  path.setAttribute('d', 'M10 18a8 8 0 100-16 8 8 0 000 16zM10 5C7 5 5 7.2 5 10C5 11.8 6.2 13.2 7.5 14L7.5 16L12.5 16L12.5 14C13.8 13.2 15 11.8 15 10C15 7.2 13 5 10 5ZM7.5 14h5v.7h-5z');
   svg.appendChild(path);
   return svg;
 }
