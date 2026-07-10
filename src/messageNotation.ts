@@ -163,23 +163,23 @@ function createTipsIcon(): SVGSVGElement {
   // rounded bottom cap — punched out of the disc via the mask.
   const bulb = document.createElementNS(SVG_NS, 'circle');
   bulb.setAttribute('cx', '10');
-  bulb.setAttribute('cy', '8.6');
-  bulb.setAttribute('r', '3.1');
+  bulb.setAttribute('cy', '8.32');
+  bulb.setAttribute('r', '3.72');
   bulb.setAttribute('fill', 'none');
   bulb.setAttribute('stroke', 'black');
-  bulb.setAttribute('stroke-width', '1.2');
+  bulb.setAttribute('stroke-width', '1.3');
 
   const check = document.createElementNS(SVG_NS, 'path');
-  check.setAttribute('d', 'M8.4 8.2 L9.5 9.35 L11.5 7.0');
+  check.setAttribute('d', 'M8.08 7.84 L9.4 9.22 L11.8 6.4');
   check.setAttribute('fill', 'none');
   check.setAttribute('stroke', 'black');
-  check.setAttribute('stroke-width', '1.1');
+  check.setAttribute('stroke-width', '1.15');
   check.setAttribute('stroke-linecap', 'round');
   check.setAttribute('stroke-linejoin', 'round');
 
   const bars = [
-    [8.2, 12.0, 11.8, 12.0],
-    [8.2, 13.2, 11.8, 13.2],
+    [7.84, 12.4, 12.16, 12.4],
+    [7.84, 13.84, 12.16, 13.84],
   ].map(([x1, y1, x2, y2]) => {
     const bar = document.createElementNS(SVG_NS, 'line');
     bar.setAttribute('x1', String(x1));
@@ -187,20 +187,20 @@ function createTipsIcon(): SVGSVGElement {
     bar.setAttribute('x2', String(x2));
     bar.setAttribute('y2', String(y2));
     bar.setAttribute('stroke', 'black');
-    bar.setAttribute('stroke-width', '1.1');
+    bar.setAttribute('stroke-width', '1.15');
     bar.setAttribute('stroke-linecap', 'round');
     return bar;
   });
 
   const cap = document.createElementNS(SVG_NS, 'rect');
-  cap.setAttribute('x', '8.8');
-  cap.setAttribute('y', '13.7');
-  cap.setAttribute('width', '2.4');
-  cap.setAttribute('height', '1.6');
-  cap.setAttribute('rx', '0.7');
+  cap.setAttribute('x', '8.56');
+  cap.setAttribute('y', '14.44');
+  cap.setAttribute('width', '2.88');
+  cap.setAttribute('height', '1.92');
+  cap.setAttribute('rx', '0.84');
   cap.setAttribute('fill', 'none');
   cap.setAttribute('stroke', 'black');
-  cap.setAttribute('stroke-width', '0.9');
+  cap.setAttribute('stroke-width', '0.95');
 
   return createMaskedDiscIcon('tips', [bulb, check, ...bars, cap]);
 }
