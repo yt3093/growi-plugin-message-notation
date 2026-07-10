@@ -39,7 +39,9 @@ function createInfoIcon(): SVGSVGElement {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('fill-rule', 'evenodd');
   path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 19a9 9 0 100-18 9 9 0 000 18zm-1.5-10h3v1h-.5v5h.5v1h-3v-1h.5v-5h-.5zm1.5-5a1.5 1.5 0 100 3a1.5 1.5 0 000-3z');
+  // symbol positioned with absolute coordinates (not relative to the circle's
+  // end point) so it stays centered regardless of the circle's radius
+  path.setAttribute('d', 'M10 19a9 9 0 100-18 9 9 0 000 18zM8.5 8h3v1h-.5v5h.5v1h-3v-1h.5v-5h-.5zM10 4a1.5 1.5 0 100 3 1.5 1.5 0 000-3z');
   svg.appendChild(path);
   return svg;
 }
@@ -55,7 +57,9 @@ function createWarnIcon(): SVGSVGElement {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('fill-rule', 'evenodd');
   path.setAttribute('clip-rule', 'evenodd');
-  path.setAttribute('d', 'M10 19a9 9 0 100-18 9 9 0 000 18zm1-13a1 1 0 10-2 0v7a1 1 0 102 0V5zm-1 9a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4');
+  // symbol positioned with absolute coordinates (not relative to the circle's
+  // end point) so it stays centered regardless of the circle's radius
+  path.setAttribute('d', 'M10 19a9 9 0 100-18 9 9 0 000 18zM11 5a1 1 0 10-2 0v7a1 1 0 102 0V5zM10 15.2a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z');
   svg.appendChild(path);
   return svg;
 }
@@ -123,46 +127,79 @@ function createMaskedDiscIcon(maskIdPrefix: string, maskContent: SVGElement[]): 
   return svg;
 }
 
+// Diagonal paperclip silhouette, reproduced as closely as possible from the
+// reference artwork (original viewBox 0 0 512 512), scaled + centered into
+// our 20x20 icon space via `transform` rather than hand-converted coordinates.
+const NOTE_CLIP_PATH_D =
+  'M454.821,253.582L273.256,435.14c-11.697,11.697-25.124,20.411-39.484,26.235c-21.529,8.729-45.165,10.928-67.755,6.55' +
+  'c-22.597-4.378-44.054-15.25-61.597-32.784c-11.69-11.69-20.396-25.118-26.227-39.484c-8.729-21.529-10.929-45.165-6.55-67.748' +
+  'c4.386-22.597,15.25-44.055,32.778-61.596l203.13-203.13c7.141-7.134,15.299-12.43,24.035-15.969' +
+  'c13.1-5.318,27.516-6.656,41.263-3.994c13.769,2.677,26.798,9.27,37.498,19.963c7.133,7.134,12.423,15.292,15.968,24.035' +
+  'c5.318,13.092,6.657,27.502,3.987,41.264c-2.67,13.762-9.262,26.783-19.955,37.498L213.261,363.064' +
+  'c-2.534,2.528-5.375,4.364-8.436,5.61c-4.571,1.851-9.661,2.335-14.495,1.396c-4.848-0.954-9.355-3.225-13.15-7.006' +
+  'c-2.534-2.534-4.364-5.368-5.603-8.429c-1.865-4.571-2.342-9.668-1.402-14.495c0.947-4.841,3.225-9.355,7.005-13.149' +
+  'l175.521-175.528l-29.616-29.617l-175.528,175.52c-6.536,6.536-11.505,14.182-14.801,22.313' +
+  'c-4.941,12.195-6.166,25.473-3.702,38.202c2.449,12.73,8.686,24.989,18.503,34.799c6.543,6.55,14.182,11.519,22.305,14.809' +
+  'c12.202,4.948,25.473,6.165,38.21,3.702c12.722-2.449,24.989-8.678,34.806-18.511L439.97,195.602' +
+  'c11.142-11.149,19.571-24.113,25.167-37.917c8.394-20.717,10.48-43.314,6.294-64.971c-4.179-21.643-14.73-42.432-31.46-59.155' +
+  'c-11.149-11.142-24.114-19.571-37.918-25.166c-20.717-8.401-43.314-10.48-64.971-6.301c-21.643,4.186-42.431,14.737-59.155,31.468' +
+  'L74.803,236.695c-15.713,15.691-27.552,33.931-35.426,53.352c-11.817,29.154-14.765,60.97-8.863,91.462' +
+  'c5.888,30.478,20.717,59.696,44.29,83.254c15.698,15.713,33.931,27.552,53.36,35.426c29.146,11.811,60.97,14.758,91.455,8.863' +
+  'c30.478-5.895,59.696-20.717,83.254-44.29l181.566-181.564L454.821,253.582z';
+
 function createNoteIcon(): SVGSVGElement {
-  // diagonal paperclip, punched out of the disc as a black-on-white mask stroke
+  // diagonal paperclip, punched out of the disc via the mask
   const clip = document.createElementNS(SVG_NS, 'path');
-  clip.setAttribute(
-    'd',
-    'M14.42 9.825 l-4.595 4.595 a3 3 0 0 1 -4.245 -4.245 l4.595 -4.595 a2 2 0 0 1 2.83 2.83 l-4.6 4.595 a1 1 0 0 1 -1.415 -1.415 l4.245 -4.24',
-  );
-  clip.setAttribute('fill', 'none');
-  clip.setAttribute('stroke', 'black');
-  clip.setAttribute('stroke-width', '1.4');
-  clip.setAttribute('stroke-linecap', 'round');
-  clip.setAttribute('stroke-linejoin', 'round');
+  clip.setAttribute('d', NOTE_CLIP_PATH_D);
+  clip.setAttribute('fill', 'black');
+  clip.setAttribute('transform', 'translate(4.5,4.5) scale(0.021484)');
 
   return createMaskedDiscIcon('note', [clip]);
 }
 
 function createTipsIcon(): SVGSVGElement {
-  // lightbulb (glass + base) with 3 radiating rays, punched out of the disc
-  const bulb = document.createElementNS(SVG_NS, 'circle');
-  bulb.setAttribute('cx', '10');
-  bulb.setAttribute('cy', '11');
-  bulb.setAttribute('r', '2.8');
+  // lightbulb modeled on the reference artwork: tapered glass dome, two
+  // screw-base bars, a rounded bottom cap, and 3 radiating rays — punched
+  // out of the disc via the mask.
+  const bulb = document.createElementNS(SVG_NS, 'path');
+  bulb.setAttribute(
+    'd',
+    'M8.2 11.6 C7.7 10.8 7.4 10.3 7.55 9.7 C7.7 8.7 8.6 8.0 10 8.0 C11.4 8.0 12.3 8.7 12.45 9.7 C12.6 10.3 12.3 10.8 11.8 11.6',
+  );
   bulb.setAttribute('fill', 'none');
   bulb.setAttribute('stroke', 'black');
-  bulb.setAttribute('stroke-width', '1.3');
+  bulb.setAttribute('stroke-width', '1.1');
+  bulb.setAttribute('stroke-linecap', 'round');
 
-  const base = document.createElementNS(SVG_NS, 'rect');
-  base.setAttribute('x', '8.8');
-  base.setAttribute('y', '13.4');
-  base.setAttribute('width', '2.4');
-  base.setAttribute('height', '1.6');
-  base.setAttribute('rx', '0.5');
-  base.setAttribute('fill', 'none');
-  base.setAttribute('stroke', 'black');
-  base.setAttribute('stroke-width', '1.2');
+  const bars = [
+    [8.5, 12.7, 11.5, 12.7],
+    [8.5, 14.0, 11.5, 14.0],
+  ].map(([x1, y1, x2, y2]) => {
+    const bar = document.createElementNS(SVG_NS, 'line');
+    bar.setAttribute('x1', String(x1));
+    bar.setAttribute('y1', String(y1));
+    bar.setAttribute('x2', String(x2));
+    bar.setAttribute('y2', String(y2));
+    bar.setAttribute('stroke', 'black');
+    bar.setAttribute('stroke-width', '1.0');
+    bar.setAttribute('stroke-linecap', 'round');
+    return bar;
+  });
+
+  const cap = document.createElementNS(SVG_NS, 'rect');
+  cap.setAttribute('x', '9');
+  cap.setAttribute('y', '14.9');
+  cap.setAttribute('width', '2');
+  cap.setAttribute('height', '1.3');
+  cap.setAttribute('rx', '0.6');
+  cap.setAttribute('fill', 'none');
+  cap.setAttribute('stroke', 'black');
+  cap.setAttribute('stroke-width', '0.9');
 
   const rays: Array<[number, number, number, number]> = [
-    [10, 6.6, 10, 4.8],
-    [7.55, 7.75, 6.1, 6.3],
-    [12.45, 7.75, 13.9, 6.3],
+    [10, 6.3, 10, 4.5],
+    [7.3, 7.55, 5.8, 6.0],
+    [12.7, 7.55, 14.2, 6.0],
   ];
   const rayEls = rays.map(([x1, y1, x2, y2]) => {
     const ray = document.createElementNS(SVG_NS, 'line');
@@ -171,12 +208,12 @@ function createTipsIcon(): SVGSVGElement {
     ray.setAttribute('x2', String(x2));
     ray.setAttribute('y2', String(y2));
     ray.setAttribute('stroke', 'black');
-    ray.setAttribute('stroke-width', '1.5');
+    ray.setAttribute('stroke-width', '1.2');
     ray.setAttribute('stroke-linecap', 'round');
     return ray;
   });
 
-  return createMaskedDiscIcon('tips', [bulb, base, ...rayEls]);
+  return createMaskedDiscIcon('tips', [bulb, ...bars, cap, ...rayEls]);
 }
 
 const ICON_CREATORS: Record<NoteType, () => SVGSVGElement> = {
