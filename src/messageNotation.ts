@@ -228,19 +228,16 @@ function createNoteContainer(type: NoteType): { container: HTMLDivElement; body:
   container.className = `gpmt-note gpmt-note-${type}`;
   container.setAttribute(ENHANCED_ATTR, '1');
   container.setAttribute('role', 'note');
+  // the type label is no longer shown visually (icon only), keep it for a11y
+  container.setAttribute('aria-label', LABELS[type]);
 
-  const header = document.createElement('div');
-  header.className = 'gpmt-note-header';
-  header.appendChild(ICON_CREATORS[type]());
-  const label = document.createElement('span');
-  label.className = 'gpmt-note-label';
-  label.textContent = LABELS[type];
-  header.appendChild(label);
+  const icon = ICON_CREATORS[type]();
+  icon.classList.add('gpmt-note-icon');
 
   const body = document.createElement('div');
   body.className = 'gpmt-note-body';
 
-  container.appendChild(header);
+  container.appendChild(icon);
   container.appendChild(body);
 
   return { container, body };

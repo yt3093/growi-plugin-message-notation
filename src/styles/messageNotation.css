@@ -78,10 +78,13 @@ html[data-bs-theme="dark"] {
 
 /* ===== Base note block ===== */
 .gpmt-note {
-  display:       block;
+  display:       flex;
+  align-items:   flex-start;
+  gap:           10px;
   border-left:   var(--gpmt-border-width) solid;
   border-radius: var(--gpmt-radius);
   margin:        1em 0;
+  padding:       10px 14px;
   overflow:      hidden;
 }
 
@@ -107,42 +110,24 @@ html[data-bs-theme="dark"] {
   background:   var(--gpmt-tips-bg);
 }
 
-/* ===== Header ===== */
-.gpmt-note-header {
-  display:        flex;
-  align-items:    center;
-  gap:            6px;
-  padding:        7px 14px;
-  font-size:      0.82em;
-  font-weight:    700;
-  letter-spacing: 0.02em;
-}
-
-.gpmt-note-info  .gpmt-note-header {
-  color: var(--gpmt-info-color);
-}
-.gpmt-note-warn  .gpmt-note-header {
-  color: var(--gpmt-warn-color);
-}
-.gpmt-note-alert .gpmt-note-header {
-  color: var(--gpmt-alert-color);
-}
-.gpmt-note-note  .gpmt-note-header {
-  color: var(--gpmt-note-color);
-}
-.gpmt-note-tips  .gpmt-note-header {
-  color: var(--gpmt-tips-color);
-}
-
-.gpmt-note-header svg {
+/* ===== Icon ===== */
+.gpmt-note-icon {
   flex-shrink: 0;
-  width:  24px;
-  height: 24px;
+  width:       24px;
+  height:      24px;
+  margin-top:  2px; /* optical alignment with the body's first line of text */
 }
+
+.gpmt-note-info  .gpmt-note-icon { color: var(--gpmt-info-color); }
+.gpmt-note-warn  .gpmt-note-icon { color: var(--gpmt-warn-color); }
+.gpmt-note-alert .gpmt-note-icon { color: var(--gpmt-alert-color); }
+.gpmt-note-note  .gpmt-note-icon { color: var(--gpmt-note-color); }
+.gpmt-note-tips  .gpmt-note-icon { color: var(--gpmt-tips-color); }
 
 /* ===== Body ===== */
 .gpmt-note-body {
-  padding: 10px 14px 12px;
+  flex:     1;
+  min-width: 0;
 }
 
 .gpmt-note-body > *:first-child { margin-top: 0; }
@@ -155,8 +140,7 @@ html[data-bs-theme="dark"] {
     background: #f8f8f8 !important;
     break-inside: avoid;
   }
-  .gpmt-note-header {
-    background: #eee !important;
+  .gpmt-note-icon {
     color: #333 !important;
   }
 }
