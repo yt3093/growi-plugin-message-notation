@@ -158,22 +158,30 @@ function createNoteIcon(): SVGSVGElement {
 }
 
 function createTipsIcon(): SVGSVGElement {
-  // lightbulb modeled on the reference artwork: tapered glass dome, two
-  // screw-base bars, a rounded bottom cap, and 3 radiating rays — punched
-  // out of the disc via the mask.
+  // enlarged lightbulb (no rays) with a checkmark inside the glass, two
+  // screw-base bars, and a rounded bottom cap — punched out of the disc via
+  // the mask.
   const bulb = document.createElementNS(SVG_NS, 'path');
   bulb.setAttribute(
     'd',
-    'M8.2 11.6 C7.7 10.8 7.4 10.3 7.55 9.7 C7.7 8.7 8.6 8.0 10 8.0 C11.4 8.0 12.3 8.7 12.45 9.7 C12.6 10.3 12.3 10.8 11.8 11.6',
+    'M7.3 10.4 C6.55 9.2 6.1 8.45 6.325 7.55 C6.55 6.05 7.9 5.0 10 5.0 C12.1 5.0 13.45 6.05 13.675 7.55 C13.9 8.45 13.45 9.2 12.7 10.4',
   );
   bulb.setAttribute('fill', 'none');
   bulb.setAttribute('stroke', 'black');
-  bulb.setAttribute('stroke-width', '1.1');
+  bulb.setAttribute('stroke-width', '1.3');
   bulb.setAttribute('stroke-linecap', 'round');
 
+  const check = document.createElementNS(SVG_NS, 'path');
+  check.setAttribute('d', 'M7.8 7.5 L9.3 9.1 L12.3 5.6');
+  check.setAttribute('fill', 'none');
+  check.setAttribute('stroke', 'black');
+  check.setAttribute('stroke-width', '1.3');
+  check.setAttribute('stroke-linecap', 'round');
+  check.setAttribute('stroke-linejoin', 'round');
+
   const bars = [
-    [8.5, 12.7, 11.5, 12.7],
-    [8.5, 14.0, 11.5, 14.0],
+    [7.75, 10.9, 12.25, 10.9],
+    [7.75, 12.5, 12.25, 12.5],
   ].map(([x1, y1, x2, y2]) => {
     const bar = document.createElementNS(SVG_NS, 'line');
     bar.setAttribute('x1', String(x1));
@@ -181,39 +189,22 @@ function createTipsIcon(): SVGSVGElement {
     bar.setAttribute('x2', String(x2));
     bar.setAttribute('y2', String(y2));
     bar.setAttribute('stroke', 'black');
-    bar.setAttribute('stroke-width', '1.0');
+    bar.setAttribute('stroke-width', '1.1');
     bar.setAttribute('stroke-linecap', 'round');
     return bar;
   });
 
   const cap = document.createElementNS(SVG_NS, 'rect');
-  cap.setAttribute('x', '9');
-  cap.setAttribute('y', '14.9');
-  cap.setAttribute('width', '2');
-  cap.setAttribute('height', '1.3');
-  cap.setAttribute('rx', '0.6');
+  cap.setAttribute('x', '8.5');
+  cap.setAttribute('y', '13.0');
+  cap.setAttribute('width', '3');
+  cap.setAttribute('height', '1.95');
+  cap.setAttribute('rx', '0.9');
   cap.setAttribute('fill', 'none');
   cap.setAttribute('stroke', 'black');
   cap.setAttribute('stroke-width', '0.9');
 
-  const rays: Array<[number, number, number, number]> = [
-    [10, 6.3, 10, 4.5],
-    [7.3, 7.55, 5.8, 6.0],
-    [12.7, 7.55, 14.2, 6.0],
-  ];
-  const rayEls = rays.map(([x1, y1, x2, y2]) => {
-    const ray = document.createElementNS(SVG_NS, 'line');
-    ray.setAttribute('x1', String(x1));
-    ray.setAttribute('y1', String(y1));
-    ray.setAttribute('x2', String(x2));
-    ray.setAttribute('y2', String(y2));
-    ray.setAttribute('stroke', 'black');
-    ray.setAttribute('stroke-width', '1.2');
-    ray.setAttribute('stroke-linecap', 'round');
-    return ray;
-  });
-
-  return createMaskedDiscIcon('tips', [bulb, ...bars, cap, ...rayEls]);
+  return createMaskedDiscIcon('tips', [bulb, check, ...bars, cap]);
 }
 
 const ICON_CREATORS: Record<NoteType, () => SVGSVGElement> = {
