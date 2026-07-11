@@ -59,8 +59,8 @@ html[data-bs-theme="dark"] {
   --gpmt-info-border:     #22c55e;
   --gpmt-info-bg:         rgba(24, 164, 76, 0.10);
 
-  --gpmt-warn-color:      #fbbf24;
-  --gpmt-warn-border:     #f59e0b;
+  --gpmt-warn-color:      #facc15;
+  --gpmt-warn-border:     #eab308;
   --gpmt-warn-bg:         rgba(217, 119, 6, 0.10);
 
   --gpmt-alert-color:     #f87171;
