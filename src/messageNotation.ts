@@ -349,13 +349,28 @@ function isEligibleParagraph(p: Element): boolean {
   return true;
 }
 
-function scanAndTransform(): void {
+// Cheap rejection check: the opening marker is always the very first text
+// node of the paragraph, so we can rule out the vast majority of paragraphs
+// by inspecting just that one node instead of computing p.textContent (which
+// walks and concatenates every descendant text node — expensive for large
+// paragraphs and run on every <p> on the page during a scan).
+function looksLikeMessageOpen(p: Element): boolean {
+  const first = p.firstChild;
+  if (!first || first.nodeType !== Node.TEXT_NODE) return false;
+  return (first.textContent ?? '').trimStart().startsWith(':::');
+}
+
+function scanAndTransform(root: ParentNode = document): void {
   if (isHiddenContext()) return;
 
-  const paragraphs = Array.from(document.querySelectorAll('p'));
+  const paragraphs =
+    root instanceof Element && root.tagName === 'P'
+      ? [root, ...Array.from(root.querySelectorAll('p'))]
+      : Array.from(root.querySelectorAll('p'));
 
   for (const p of paragraphs) {
     if (!isEligibleParagraph(p)) continue;
+    if (!looksLikeMessageOpen(p)) continue;
 
     const text = p.textContent ?? '';
     const lines = text.split('\n').map(l => l.trim()).filter(l => l);
@@ -393,16 +408,38 @@ export function createMessageNotation() {
   const origPushState = history.pushState.bind(history);
   const origReplaceState = history.replaceState.bind(history);
 
-  function scheduleScan(): void {
+  // When mutation-triggered scans only touch a known subtree, we scope the
+  // rescan to just those roots instead of re-querying the whole document.
+  // Any scan requested without specific roots (navigation, body class
+  // change) needs the full document and supersedes pending scoped roots.
+  let fullScanPending = false;
+  const pendingScanRoots = new Set<ParentNode>();
+
+  function scheduleScan(roots?: ParentNode[]): void {
+    if (roots && roots.length > 0) {
+      if (!fullScanPending) {
+        for (const r of roots) pendingScanRoots.add(r);
+      }
+    } else {
+      fullScanPending = true;
+      pendingScanRoots.clear();
+    }
+
     if (scanTimer !== null) clearTimeout(scanTimer);
     scanTimer = setTimeout(() => {
       scanTimer = null;
-      scanAndTransform();
+      if (fullScanPending) {
+        scanAndTransform();
+      } else {
+        for (const root of pendingScanRoots) scanAndTransform(root);
+      }
+      fullScanPending = false;
+      pendingScanRoots.clear();
     }, 0);
   }
 
   function onNavigate(): void {
-    requestAnimationFrame(() => requestAnimationFrame(scheduleScan));
+    requestAnimationFrame(() => requestAnimationFrame(() => scheduleScan()));
   }
 
   function onBodyClassChange(): void {
@@ -436,7 +473,7 @@ export function createMessageNotation() {
       window.addEventListener('gpmt-navigate', onNavigate);
 
       observer = new MutationObserver(mutations => {
-        let needsScan = false;
+        const scanRoots: Element[] = [];
         let bodyClassChanged = false;
 
         for (const mut of mutations) {
@@ -448,13 +485,13 @@ export function createMessageNotation() {
             if (!(node instanceof Element)) continue;
             if (isPluginNode(node)) continue;
             if (node.tagName === 'P' || node.querySelector?.('p')) {
-              needsScan = true;
+              scanRoots.push(node);
             }
           }
         }
 
         if (bodyClassChanged) onBodyClassChange();
-        if (needsScan) scheduleScan();
+        if (scanRoots.length > 0) scheduleScan(scanRoots);
       });
 
       observer.observe(document.body, {
