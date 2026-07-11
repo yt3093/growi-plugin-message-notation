@@ -450,7 +450,7 @@ export function createMessageNotation() {
     }
   }
 
-  const SKIP_CLASS_PREFIXES = ['gpmt-note', 'gpmt-note-header', 'gpmt-note-body', 'gpmt-note-label'];
+  const SKIP_CLASS_PREFIXES = ['gpmt-note', 'gpmt-note-icon', 'gpmt-note-body'];
 
   function isPluginNode(el: Element): boolean {
     return SKIP_CLASS_PREFIXES.some(cls => el.classList.contains(cls));

@@ -78,7 +78,7 @@ growi-plugin-message-notation/
   4. `parent.insertBefore(container, openP)` → `openP.remove()` → `closeP.remove()`
   5. 復元関数: `container.replaceWith(openP, ...Array.from(body.children), closeP)` を `noteBlocks` に登録
 
-- **`createNoteContainer(type)`**: `div.gpmt-note.gpmt-note-{type}[data-gpmt-enhanced][role=note]` を生成し、内部に `div.gpmt-note-header`（SVG アイコン + `span.gpmt-note-label`）と `div.gpmt-note-body` を持つ `{ container, body }` を返す。`innerHTML` は使わない。
+- **`createNoteContainer(type)`**: `div.gpmt-note.gpmt-note-{type}[data-gpmt-enhanced][role=note][aria-label]` を生成し、内部に SVG アイコン（`.gpmt-note-icon`）と `div.gpmt-note-body` を横並びで持つ `{ container, body }` を返す。ヘッダー行のラベルテキストは表示せず、`aria-label` にのみ保持する。`innerHTML` は使わない。
 
 - **`noteBlocks`**: `Map<HTMLDivElement, () => void>` でコンテナ → 復元関数を管理。WeakMap ではなく通常 Map を使用（`cleanupAll()` で全件反復するため）。
 
@@ -86,7 +86,7 @@ growi-plugin-message-notation/
 
 - **SPA 遷移検知**: `pushState` / `replaceState` にカスタムイベント `'gpmt-navigate'` をモンキーパッチ。`popstate` / `hashchange` も購読し、いずれも 2 段 `requestAnimationFrame` + `scheduleScan()` で DOM が安定してから `scanAndTransform()` を実行。
 
-- **MutationObserver**: `document.body` を `childList: true, subtree: true, attributes: true, attributeFilter: ['class']` で監視。追加ノードが `gpmt-note` / `gpmt-note-header` / `gpmt-note-body` / `gpmt-note-label` クラスを持つ場合はスキップして自己追加による無限ループを防ぐ。`<p>` またはそれを含む要素の追加で `scheduleScan()`。`body.class` 変化時（編集モード遷移）は `isHiddenContext()` を判定し、true なら `cleanupAll()`、false なら `scheduleScan()`。
+- **MutationObserver**: `document.body` を `childList: true, subtree: true, attributes: true, attributeFilter: ['class']` で監視。追加ノードが `gpmt-note` / `gpmt-note-icon` / `gpmt-note-body` クラスを持つ場合はスキップして自己追加による無限ループを防ぐ。`<p>` またはそれを含む要素の追加時は、変更があった部分木だけを対象にスコープされた再スキャンを予約する（`scheduleScan(roots)`）。`body.class` 変化時（編集モード遷移）は `isHiddenContext()` を判定し、true なら `cleanupAll()`、false ならドキュメント全体を対象とするフルスキャンを予約する。
 
 - **`isHiddenContext()`**: `/admin` / `/admin/*` パス、`#edit` / `/edit` サフィックス、`body.editing` / `body.grw-editor-mode` / `body.modal-open` クラスのいずれかで true を返す。
 
@@ -122,9 +122,8 @@ Case 1 では `<p>` の子ノードにテキストノード・`<br>`・インラ
 | カスタムイベント名 | `gpmt-navigate` |
 | CSS 変数 | `--gpmt-*` |
 | note ブロッククラス | `gpmt-note` |
-| 種別クラス | `gpmt-note-info` / `gpmt-note-warn` / `gpmt-note-alert` |
-| ヘッダークラス | `gpmt-note-header` |
-| ラベルクラス | `gpmt-note-label` |
+| 種別クラス | `gpmt-note-info` / `gpmt-note-warn` / `gpmt-note-alert` / `gpmt-note-note` / `gpmt-note-tips` |
+| アイコンクラス | `gpmt-note-icon` |
 | ボディクラス | `gpmt-note-body` |
 | pluginActivators キー | `growi-plugin-message-notation` |
 
